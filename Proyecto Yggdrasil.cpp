@@ -20,6 +20,7 @@ struct Operativo {
     int ID_Clave;
     int Bando;
     int HP_Base;
+    
 };
 
 struct NodoBTree4 {
