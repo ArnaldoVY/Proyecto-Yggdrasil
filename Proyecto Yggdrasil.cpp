@@ -41,31 +41,52 @@ void insertarOperativo(Operativo *&Neon,Operativo *&OMEGA,int ID, int BandoNO, i
     newOperativo->HP_Base=HP;
     Operativo* aux = nullptr;
     if(newOperativo->Bando==1){
-       if(Neon==nullptr) Neon=newOperativo;
-    
-        else{
             aux=Neon;
             newOperativo->prox=aux;
             Neon=newOperativo;
-        }
+        
         cout<<"Bienvenido al equipo Neon"<<endl;
         
     }
-    else if(newOperativo->Bando==2){
-        if(OMEGA==nullptr) OMEGA=newOperativo;
+    else  {
+        aux=OMEGA;
+        newOperativo->prox=aux;
+        OMEGA=newOperativo;
     
-        else{
-            aux=OMEGA;
-            newOperativo->prox=aux;
-            OMEGA=newOperativo;
-        }
         cout<<"Bienvenido al equipo OMEGA"<<endl;
     }
     cout<<"Operativo insertado con exito"<<endl;
 
 }
 
+void mostrarOperativos(Operativo* &Neon, Operativo* &OMEGA) {
+    Operativo* aux = nullptr;
+    int opc;
+    cout << "Seleccione un equipo para mostrar sus operativos:" << endl;
+    cout << "1. Equipo Neon" << endl;
+    cout << "2. Equipo OMEGA" << endl;
+    cin >> opc;
 
+    if (opc == 1) {
+        cout << "\n[Equipo Neon]" << endl;
+        aux = Neon;
+        while(aux!= nullptr){
+            cout << "ID: " << aux->ID_Clave << " -> " ;
+            aux = aux->prox;
+        }   
+    }
+    else if (opc == 2) {
+        cout << "\n[Equipo OMEGA]" << endl;
+        aux = OMEGA;
+        while(aux!= nullptr){
+            cout << "ID: " << aux->ID_Clave << " -> " ;
+            aux = aux->prox;
+        }   
+    }
+    else cout << "Opcion no valida. Regresando al menu principal." << endl;
+
+    
+}
 //Personajes y perfiles de equipamiento
 struct Arma {
     string nombre;
@@ -131,7 +152,9 @@ int main (){
         cout << "2. Extirpacion Manual (Eliminar por ID)" << endl;
         cout << "3. Inteligencia (Buscar Ruta de Acceso)" << endl;
         cout << "4. Auditoria Visual (Imprimir Arbol)" << endl;
-        cout << "5. Desconectar (Salir)" << endl;
+        cout << "5. Mostrar Operativos por Equipo" << endl;
+        cout << "6. Desconectar del Nucleo (Salir)" << endl;
+
         cout << "=============================================" << endl;
         cout << "Seleccione un comando: ";
         cin >> opcion;
@@ -163,13 +186,16 @@ int main (){
                 /*auditoriaVisual();*/
                 break;
             case 5:
+                mostrarOperativos(Neon, OMEGA);
+                break;
+            case 6:
                 cout << "\nDesconectando del Nucleo de Yggdrasil. Fin de la transmision." << endl;
                 break;
             default:
                 cout << "\n[ERROR] Comando no reconocido. Intente de nuevo." << endl;
         }
 
-    } while (opcion != 5);
+    } while (opcion != 6);
 
     return 0;
 }
