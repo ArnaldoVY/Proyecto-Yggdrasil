@@ -35,32 +35,36 @@ struct NodoBTree4 {
 }; 
 void insertarOperativo(Operativo *&Neon,Operativo *&OMEGA,int ID, int BandoNO, int HP) {
     Operativo* newOperativo = new Operativo;
-    newOperativo=nullptr;
-    cout << "\n[Función Insertar Operativo] " << endl;
-    cout<< "Ingrese ID del Operativo: ";
-    cin>> ID;
-    newOperativo->ID_Clave=ID;
-    cout<< "Ingrese Bando del Operativo (1 para Neon, 2 para OMEGA): ";
-    cin>> BandoNO;
+   
     newOperativo->Bando=BandoNO;
-    HP=100;
+    newOperativo->ID_Clave=ID;
     newOperativo->HP_Base=HP;
     Operativo* aux = nullptr;
     if(newOperativo->Bando==1){
-        aux=Neon;
-        newOperativo->prox=aux;
-        Neon=newOperativo;
+       if(Neon==nullptr) Neon=newOperativo;
+    
+        else{
+            aux=Neon;
+            newOperativo->prox=aux;
+            Neon=newOperativo;
+        }
         cout<<"Bienvenido al equipo Neon"<<endl;
         
     }
-    else{
-        aux=OMEGA;
-        newOperativo->prox=aux;
-        OMEGA=newOperativo;
+    else if(newOperativo->Bando==2){
+        if(OMEGA==nullptr) OMEGA=newOperativo;
+    
+        else{
+            aux=OMEGA;
+            newOperativo->prox=aux;
+            OMEGA=newOperativo;
+        }
         cout<<"Bienvenido al equipo OMEGA"<<endl;
     }
+    cout<<"Operativo insertado con exito"<<endl;
 
 }
+
 
 //Personajes y perfiles de equipamiento
 struct Arma {
@@ -115,6 +119,8 @@ int main (){
     cout << "\nPresione ENTER para continuar...";
     cin.get();
     clearscreen();
+    Operativo* Neon = nullptr;
+    Operativo* OMEGA = nullptr;
     int opcion;
 
     do {
@@ -132,9 +138,15 @@ int main (){
 
         switch (opcion) {
             case 1: {
-                Operativo* Neon = nullptr;
-                Operativo* OMEGA = nullptr;
+                
                 int ID, BandoNO, HP;
+                cout << "\n[Función Insertar Operativo] " << endl;
+                cout<< "Ingrese ID del Operativo: ";
+                cin>> ID;
+                cout<< "Ingrese Bando del Operativo (1 para Neon, 2 para OMEGA): "<<endl;
+                cin>> BandoNO;
+
+                HP=100;
 
                 insertarOperativo(Neon, OMEGA, ID, BandoNO, HP);
                 break;
