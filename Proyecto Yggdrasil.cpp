@@ -87,6 +87,41 @@ void mostrarOperativos(Operativo* &Neon, Operativo* &OMEGA) {
 
     
 }
+
+void buscar(Operativo* &Neon, Operativo* &OMEGA, int ID) {
+    Operativo* aux = nullptr;
+    bool encontrado = false;
+
+    // Buscar en el equipo Neon
+    aux = Neon;
+    while (aux != nullptr) {
+        if (aux->ID_Clave == ID) {
+            cout << "Operativo encontrado en el equipo Neon: ID " << aux->ID_Clave<< endl;
+            encontrado = true;
+            break;
+        }
+        aux = aux->prox;
+    }
+
+    // Si no se encontró en Neon, buscar en OMEGA
+    if (!encontrado) {
+        aux = OMEGA;
+        while (aux != nullptr) {
+            if (aux->ID_Clave == ID) {
+                cout << "Operativo encontrado en el equipo OMEGA: ID " << aux->ID_Clave << endl;
+                encontrado = true;
+                break;
+            }
+            aux = aux->prox;
+        }
+    }
+
+    if (!encontrado) {
+        cout << "Operativo con ID " << ID << " no encontrado en ninguno de los equipos." << endl;
+    }
+
+
+}
 //Personajes y perfiles de equipamiento
 struct Arma {
     string nombre;
@@ -153,7 +188,8 @@ int main (){
         cout << "3. Inteligencia (Buscar Ruta de Acceso)" << endl;
         cout << "4. Auditoria Visual (Imprimir Arbol)" << endl;
         cout << "5. Mostrar Operativos por Equipo" << endl;
-        cout << "6. Desconectar del Nucleo (Salir)" << endl;
+        cout << "6. Buscar Operativo por ID" << endl;
+        cout << "7. Desconectar del Nucleo (Salir)" << endl;
 
         cout << "=============================================" << endl;
         cout << "Seleccione un comando: ";
@@ -189,13 +225,19 @@ int main (){
                 mostrarOperativos(Neon, OMEGA);
                 break;
             case 6:
+                int ID;
+                cout << "\nIngrese el ID del operativo a buscar: ";
+                cin >> ID;
+                buscar(Neon, OMEGA, ID);
+                break;
+            case 7:
                 cout << "\nDesconectando del Nucleo de Yggdrasil. Fin de la transmision." << endl;
                 break;
             default:
                 cout << "\n[ERROR] Comando no reconocido. Intente de nuevo." << endl;
         }
 
-    } while (opcion != 6);
+    } while (opcion != 7);
 
     return 0;
 }
