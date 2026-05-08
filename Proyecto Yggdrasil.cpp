@@ -2,6 +2,79 @@
 #include <string>
 
 using namespace std;
+
+
+
+//Parte 1 Gestion del arbol B-4
+//Personajes y perfiles de equipamiento
+struct Arma {
+    string nombre;
+    int dano;
+};
+
+struct Escudo {
+    string tipo;
+    int actual;
+    int maximo;
+};
+
+struct Vida {
+    int actual;
+    int maximo;
+};
+
+struct ClasePersonaje {
+    string nombre;
+    int HP_Base;
+    Arma arma_base;
+    int escudos_iniciales;
+    string tipo_escudo;
+    bool control_mental;
+};
+
+struct Operativo {
+    int ID_Clave;
+    int Bando;
+    Vida vida;
+    Escudo escudo;
+    Arma arma;
+    Operativo* prox;
+};
+
+struct NodoBTree4 {
+    Operativo* ocupantes[3];
+    NodoBTree4* hijos[4];
+    int cantidad_actual;
+    bool hoja;
+}; 
+
+const ClasePersonaje Juggernaut = {
+    "Juggernaut",
+    150,
+    {"Arma Base", 15},
+    3,
+    "Escudo Físico",
+    false
+};
+
+const ClasePersonaje Ejecutor = {
+    "Ejecutor",
+    100,
+    {"Arma Base", 30},
+    1,
+    "Escudo Anti-Plasma",
+    false
+};
+
+const ClasePersonaje Espectro = {
+    "Espectro",
+    60,
+    {"Arma Base", 10},
+    0,
+    "",
+    true
+};
+
 //Presentacion y limpieza de pantalla
     void presentacion() {
         cout << "¡Bienvenido a Yggdrasil, el juego de estrategia y defensa!" << endl;
@@ -10,54 +83,114 @@ using namespace std;
     }
 
     void clearscreen() {
-
-        cout << string(100, '\n');
+        system("cls");
     }
 
-
-//Parte 1 Gestion del arbol B-4
-
-
-struct Operativo {
-    int ID_Clave;
-    int Bando;
-    int HP_Base;
-    Operativo*prox;
-    
-};
-
-
-struct NodoBTree4 {
-    Operativo* ocupantes[3];
-    NodoBTree4* hijos[4];
-    int cantidad_actual;
-    bool hoja;
-}; 
-void insertarOperativo(Operativo *&Neon,Operativo *&OMEGA,int ID, int BandoNO, int HP) {
-    Operativo* newOperativo = new Operativo;
-   
-    newOperativo->Bando=BandoNO;
-    newOperativo->ID_Clave=ID;
-    newOperativo->HP_Base=HP;
-    Operativo* aux = nullptr;
-    if(newOperativo->Bando==1){
-            aux=Neon;
-            newOperativo->prox=aux;
-            Neon=newOperativo;
-        
-        cout<<"Bienvenido al equipo Neon"<<endl;
-        
+void insertarOrdenadoAscendente(Operativo*& head, Operativo* newOp) {
+    if (head == nullptr || newOp->ID_Clave < head->ID_Clave) {
+        newOp->prox = head;
+        head = newOp;
+        return;
     }
-    else  {
-        aux=OMEGA;
-        newOperativo->prox=aux;
-        OMEGA=newOperativo;
-    
-        cout<<"Bienvenido al equipo OMEGA"<<endl;
+    Operativo* current = head;
+    while (current->prox != nullptr && current->prox->ID_Clave < newOp->ID_Clave) {
+        current = current->prox;
     }
-    cout<<"Operativo insertado con exito"<<endl;
-
+    newOp->prox = current->prox;
+    current->prox = newOp;
 }
+
+bool existeOperativoEnLista(Operativo* head, int ID) {
+    Operativo* current = head;
+    while (current != nullptr) {
+        if (current->ID_Clave == ID) {
+            return true;
+        }
+        current = current->prox;
+    }
+    return false;
+}
+
+bool existeOperativo(Operativo* Neon, Operativo* OMEGA, int ID) {
+    return existeOperativoEnLista(Neon, ID) || existeOperativoEnLista(OMEGA, ID);
+}
+
+bool eliminarOperativoPorID(Operativo*& head, int ID) {
+    Operativo* current = head;
+    Operativo* prev = nullptr;
+
+    while (current != nullptr) {
+        if (current->ID_Clave == ID) {
+            if (prev == nullptr) {
+                head = current->prox;
+            } else {
+                prev->prox = current->prox;
+            }
+            delete current;
+            return true;
+        }
+        prev = current;
+        current = current->prox;
+    }
+
+    return false;
+}
+
+void eliminarOperativo(Operativo*& Neon, Operativo*& OMEGA) {
+    int equipo;
+    int ID;
+    cout << "\n[Eliminar Operativo por ID]" << endl;
+    cout << "Seleccione un equipo: 1. Neon, 2. OMEGA" << endl;
+    cin >> equipo;
+    cout << "Ingrese el ID del operativo a eliminar: ";
+    cin >> ID;
+
+    bool eliminado = false;
+    if (equipo == 1) {
+        eliminado = eliminarOperativoPorID(Neon, ID);
+    } else if (equipo == 2) {
+        eliminado = eliminarOperativoPorID(OMEGA, ID);
+    } else {
+        cout << "Equipo no valido. Operacion cancelada." << endl;
+        return;
+    }
+
+    if (eliminado) {
+        cout << "Operativo con ID " << ID << " eliminado exitosamente." << endl;
+    } else {
+        cout << "No se encontro ningun operativo con ID " << ID << " en el equipo seleccionado." << endl;
+    }
+}
+
+void insertarOperativo(Operativo *&Neon,Operativo *&OMEGA,int ID, int BandoNO, int HP) {
+    if (existeOperativo(Neon, OMEGA, ID)) {
+        cout << "Error: Ya existe un operativo con ID " << ID << ". No se puede insertar duplicate." << endl;
+        return;
+    }
+
+    Operativo* newOperativo = new Operativo;
+    newOperativo->Bando = BandoNO;
+    newOperativo->ID_Clave = ID;
+    newOperativo->vida.actual = HP;
+    newOperativo->vida.maximo = HP;
+    newOperativo->escudo.tipo = "Escudo Base";
+    newOperativo->escudo.actual = 50;
+    newOperativo->escudo.maximo = 50;
+    newOperativo->arma = {"Arma Base", 10};
+    newOperativo->prox = nullptr;
+
+    if(newOperativo->Bando == 1){
+        insertarOrdenadoAscendente(Neon, newOperativo);
+        cout << "Bienvenido al equipo Neon" << endl;
+    }
+    else {
+        insertarOrdenadoAscendente(OMEGA, newOperativo);
+        cout << "Bienvenido al equipo OMEGA" << endl;
+    }
+    cout << "Operativo insertado con exito" << endl;
+}
+
+
 
 void mostrarOperativos(Operativo* &Neon, Operativo* &OMEGA) {
     Operativo* aux = nullptr;
@@ -122,47 +255,8 @@ void buscar(Operativo* &Neon, Operativo* &OMEGA, int ID) {
 
 
 }
-//Personajes y perfiles de equipamiento
-struct Arma {
-    string nombre;
-    int dano;
-};
 
-struct ClasePersonaje {
-    string nombre;
-    int HP_Base;
-    Arma arma_base;
-    int escudos_iniciales;
-    string tipo_escudo;
-    bool control_mental;
-};
 
-const ClasePersonaje Juggernaut = {
-    "Juggernaut",
-    150,
-    {"Arma Base", 15},
-    3,
-    "Escudo Físico",
-    false
-};
-
-const ClasePersonaje Ejecutor = {
-    "Ejecutor",
-    100,
-    {"Arma Base", 30},
-    1,
-    "Escudo Anti-Plasma",
-    false
-};
-
-const ClasePersonaje Espectro = {
-    "Espectro",
-    60,
-    {"Arma Base", 10},
-    0,
-    "",
-    true
-};
 
 
 
@@ -185,11 +279,11 @@ int main (){
         cout << "=============================================" << endl;
         cout << "1. Gestion del Arbol B-4 (Insertar Operativo)" << endl;
         cout << "2. Extirpacion Manual (Eliminar por ID)" << endl;
-        cout << "3. Inteligencia (Buscar Ruta de Acceso)" << endl;
-        cout << "4. Auditoria Visual (Imprimir Arbol)" << endl;
-        cout << "5. Mostrar Operativos por Equipo" << endl;
-        cout << "6. Buscar Operativo por ID" << endl;
-        cout << "7. Desconectar del Nucleo (Salir)" << endl;
+        // cout << "3. Inteligencia (Buscar Ruta de Acceso)" << endl;
+        // cout << "4. Auditoria Visual (Imprimir Arbol)" << endl;
+        cout << "3. Mostrar Operativos por Equipo" << endl;
+        cout << "4. Buscar Operativo por ID" << endl;
+        cout << "5. Desconectar del Nucleo (Salir)" << endl;
 
         cout << "=============================================" << endl;
         cout << "Seleccione un comando: ";
@@ -213,7 +307,7 @@ int main (){
             }
                 
             case 2:
-               /* eliminarOperativo();*/
+                eliminarOperativo(Neon, OMEGA);
                 break;
             case 3:
                 /*buscarInteligencia();*/
