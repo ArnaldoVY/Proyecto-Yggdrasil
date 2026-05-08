@@ -16,12 +16,16 @@ using namespace std;
 
 
 //Parte 1 Gestion del arbol B-4
+
+
 struct Operativo {
     int ID_Clave;
     int Bando;
     int HP_Base;
+    Operativo*prox;
     
 };
+
 
 struct NodoBTree4 {
     Operativo* ocupantes[3];
@@ -29,8 +33,32 @@ struct NodoBTree4 {
     int cantidad_actual;
     bool hoja;
 }; 
-void insertarOperativo() {
+void insertarOperativo(Operativo *&Neon,Operativo *&OMEGA,int ID, int BandoNO, int HP) {
+    Operativo* newOperativo = new Operativo;
+    newOperativo=nullptr;
     cout << "\n[Función Insertar Operativo] " << endl;
+    cout<< "Ingrese ID del Operativo: ";
+    cin>> ID;
+    newOperativo->ID_Clave=ID;
+    cout<< "Ingrese Bando del Operativo (1 para Neon, 2 para OMEGA): ";
+    cin>> BandoNO;
+    newOperativo->Bando=BandoNO;
+    HP=100;
+    newOperativo->HP_Base=HP;
+    Operativo* aux = nullptr;
+    if(newOperativo->Bando==1){
+        aux=Neon;
+        newOperativo->prox=aux;
+        Neon=newOperativo;
+        cout<<"Bienvenido al equipo Neon"<<endl;
+        
+    }
+    else{
+        aux=OMEGA;
+        newOperativo->prox=aux;
+        OMEGA=newOperativo;
+        cout<<"Bienvenido al equipo OMEGA"<<endl;
+    }
 
 }
 
@@ -103,9 +131,16 @@ int main (){
         cin >> opcion;
 
         switch (opcion) {
-            case 1:
-                /*insertarOperativo();*/
+            case 1: {
+                Operativo* Neon = nullptr;
+                Operativo* OMEGA = nullptr;
+                int ID, BandoNO, HP;
+
+                insertarOperativo(Neon, OMEGA, ID, BandoNO, HP);
                 break;
+
+            }
+                
             case 2:
                /* eliminarOperativo();*/
                 break;
