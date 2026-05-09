@@ -15,14 +15,13 @@ extern const ClasePersonaje Espectro;
 // Declaraciones de funciones
 void presentacion();
 void clearscreen();
-void insertarOrdenadoAscendente(Operativo*& head, Operativo* newOp);
-bool existeOperativoEnLista(Operativo* head, int ID);
-bool existeOperativo(Operativo* Neon, Operativo* OMEGA, int ID);
-bool eliminarOperativoPorID(Operativo*& head, int ID);
-void eliminarOperativo(Operativo*& Neon, Operativo*& OMEGA);
-void insertarOperativo(Operativo*& Neon, Operativo*& OMEGA, int ID, int BandoNO, int HP);
-void mostrarOperativos(Operativo*& Neon, Operativo*& OMEGA);
-void auditoriaVisual(Operativo*& Neon, Operativo*& OMEGA);
-void buscar(Operativo*& Neon, Operativo*& OMEGA, int ID);
+
+// Arbol B-4
+void insertarOperativo(NodoBTree4*& Neon, NodoBTree4*& OMEGA, int ID, int BandoNO, int HP);
+void eliminarOperativo(NodoBTree4*& Neon, NodoBTree4*& OMEGA);
+bool eliminarDelArbolB(NodoBTree4*& raiz, int ID);
+void mostrarOperativos(NodoBTree4*& Neon, NodoBTree4*& OMEGA);
+void auditoriaVisual(NodoBTree4*& Neon, NodoBTree4*& OMEGA);
+void buscar(NodoBTree4*& Neon, NodoBTree4*& OMEGA, int ID);
 
 #endif

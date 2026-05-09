@@ -38,7 +38,6 @@ struct Operativo {
     Vida vida;
     Escudo escudo;
     Arma arma;
-    Operativo* prox;
 };
 
 struct NodoBTree4 {

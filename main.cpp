@@ -10,8 +10,8 @@ int main() {
     cout << "\nPresione ENTER para continuar...";
     cin.get();
     clearscreen();
-    Operativo* Neon = nullptr;
-    Operativo* OMEGA = nullptr;
+    NodoBTree4* Neon = nullptr;
+    NodoBTree4* OMEGA = nullptr;
     int opcion;
 
     do {

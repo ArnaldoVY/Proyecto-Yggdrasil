@@ -6,6 +6,9 @@
 *.a
 *.lib
 
+# Documentation
+*.md
+
 # Visual Studio Code
 .vscode/
 
@@ -21,3 +24,4 @@ Thumbs.db
 
 # OneDrive temporary files
 ~$*
+
