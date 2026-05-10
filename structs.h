@@ -18,6 +18,16 @@ struct Escudo {
     int maximo;
 };
 
+struct NodoEscudo {
+    Escudo escudo;
+    NodoEscudo* prox;
+};
+
+struct NodoArma {
+    Arma arma;
+    NodoArma* prox;
+};
+
 struct Vida {
     int actual;
     int maximo;
@@ -36,8 +46,8 @@ struct Operativo {
     int ID_Clave;
     int Bando;
     Vida vida;
-    Escudo escudo;
-    Arma arma;
+    NodoEscudo* pilaEscudos;
+    NodoArma* listaArmas;
     Operativo* prox;
 };
 
