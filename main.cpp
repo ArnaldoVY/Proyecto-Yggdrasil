@@ -19,7 +19,7 @@ int main() {
         cout << "\n=============================================" << endl;
         cout << "   YGGDRASIL - CENTRO DE MANDO  " << endl;
         cout << "=============================================" << endl;
-        cout << "1. Gestion del Arbol B-4 (Insertar Operativo)" << endl;
+        cout << "1. Gestion de Operativos (Insertar)" << endl;
         cout << "2. Extirpacion Manual (Eliminar por ID)" << endl;
         cout << "3. Mostrar Operativos por Equipo" << endl;
         cout << "4. Buscar Operativo por ID" << endl;
@@ -32,34 +32,38 @@ int main() {
 
         switch (opcion) {
             case 1: {
-                int ID, BandoNO, HP;
-                cout << "\n[Función Insertar Operativo] " << endl;
-                cout << "Ingrese ID del Operativo: ";
-                cin >> ID;
+                clearscreen();
+                int BandoNO;
+                cout << "\n[Funcion Insertar Operativo] " << endl;
                 cout << "Ingrese Bando del Operativo (1 para Neon, 2 para OMEGA): " << endl;
                 cin >> BandoNO;
 
-                HP = 100;
-
-                insertarOperativo(Neon, OMEGA, ID, BandoNO, HP);
+                insertarOperativo(Neon, OMEGA, BandoNO);
                 break;
             }
-            case 2:
+            case 2: {
+                clearscreen();
                 eliminarOperativo(Neon, OMEGA);
                 break;
-            case 3:
+            }
+            case 3: {
+                clearscreen();
                 mostrarOperativos(Neon, OMEGA);
                 break;
+            }
             case 4: {
+                clearscreen();
                 int ID;
-                cout << "\nIngrese el ID del operativo a buscar: ";
+                cout << "Ingrese el ID del operativo a buscar: ";
                 cin >> ID;
                 buscar(Neon, OMEGA, ID);
                 break;
             }
-            case 5:
+            case 5: {
+                clearscreen();
                 auditoriaVisual(Neon, OMEGA);
                 break;
+            }
             case 6:
                 cout << "\nDesconectando del Nucleo de Yggdrasil. Fin de la transmision." << endl;
                 break;
@@ -75,5 +79,9 @@ int main() {
 
     } while (opcion != 6);
 
+    liberarOperativos(Neon);
+    liberarOperativos(OMEGA);
+
     return 0;
 }
+
